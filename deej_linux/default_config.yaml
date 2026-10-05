@@ -1,0 +1,40 @@
+# deej-linux config. Same format as upstream deej's config.yaml, plus a few extras.
+# Changes are picked up automatically while deej-linux is running.
+
+# Slider index -> target, or a list of targets.
+# Special targets: master (default output), mic (default input),
+#                  system (system/notification sounds),
+#                  deej.games (Proton/Wine games and native games that tag their audio as a game),
+#                  deej.unmapped (every app not mapped to any slider).
+# App names match the process binary or application name, case-insensitive.
+# List what's currently playing with:  deej-linux --list-apps
+slider_mapping:
+  0: master
+  1:
+    - firefox
+    - chromium
+    - chrome
+    - vivaldi
+  2: spotify
+  3:
+    - discord
+    - vesktop
+  4: mic
+  5: deej.unmapped
+
+# Flip if your pots run the "wrong" way.
+invert_sliders: false
+
+# Serial port of the board. /dev/serial/by-id/... paths stay stable across replugs;
+# find yours with:  ls /dev/serial/by-id/
+com_port: /dev/ttyACM0
+baud_rate: 9600
+
+# Ignore changes smaller than this (pot jitter): low, default, high, or a fraction like 0.01.
+noise_reduction: default
+
+# --- deej-linux extras ---
+# Snap to exactly 0 % / 100 % when within this fraction of either end.
+snap: 0.02
+# Seconds between re-applying all levels, so newly started apps pick them up.
+reapply_every: 2.0

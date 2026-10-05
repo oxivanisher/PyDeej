@@ -1,0 +1,11 @@
+[Unit]
+Description=deej hardware volume mixer
+After=pipewire-pulse.service pulseaudio.service
+
+[Service]
+ExecStart=%h/.local/share/deej-linux/venv/bin/deej-linux
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=default.target
