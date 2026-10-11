@@ -9,6 +9,7 @@ import logging
 import os
 import sys
 import time
+from pathlib import Path
 
 import pulsectl
 import serial
@@ -34,9 +35,24 @@ def is_event(sink_input):
     return role(sink_input) == "event"
 
 
+def launched_by_steam(sink_input):
+    # Steam sets SteamGameId for everything it launches as a game (also non-Steam shortcuts),
+    # but not for its own client processes.
+    pid = sink_input.proplist.get("application.process.id")
+    if not pid:
+        return False  # native PipeWire streams (e.g. SDL's pipewire driver) don't report one
+    try:
+        env = Path(f"/proc/{pid}/environ").read_bytes().split(b"\0")
+    except OSError:
+        return False
+    return any(var.startswith((b"SteamGameId=", b"SteamAppId=")) and not var.endswith(b"=0") for var in env)
+
+
 def is_game(sink_input):
     # SDL (most native Linux games) tags its streams with media.role "game" (SDL2) or "Game" (SDL3)
-    return role(sink_input) == "game" or bool(app_names(sink_input) & WINE_BINARIES)
+    return (role(sink_input) == "game"
+            or bool(app_names(sink_input) & WINE_BINARIES)
+            or launched_by_steam(sink_input))
 
 
 def parse(line, cfg):

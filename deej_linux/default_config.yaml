@@ -4,7 +4,8 @@
 # Slider index -> target, or a list of targets.
 # Special targets: master (default output), mic (default input),
 #                  system (system/notification sounds),
-#                  deej.games (Proton/Wine games and native games that tag their audio as a game),
+#                  deej.games (Proton/Wine games, games launched by Steam, and native games that
+#                              tag their audio as a game),
 #                  deej.unmapped (every app not mapped to any slider).
 # App names match the process binary or application name, case-insensitive.
 # List what's currently playing with:  deej-linux --list-apps

@@ -75,6 +75,8 @@ excluded from `deej.unmapped`.
 - Proton/Wine games: every Wine process reports the Wine loader (`wine64-preloader`, ...) as its binary
 - native Linux games that tag their audio stream with `media.role=game`, which SDL does by default
   (e.g. Factorio)
+- anything Steam launches as a game, including non-Steam shortcuts: the process has `SteamGameId` /
+  `SteamAppId` in its environment (e.g. Transport Fever 3, which uses neither SDL nor Wine)
 
 `--list-apps` marks matching streams with `[game]`. An app mapped by name to another slider takes
 precedence, which helps for a non-game Wine app.
