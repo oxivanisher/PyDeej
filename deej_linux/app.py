@@ -98,7 +98,7 @@ def apply(pulse, values, cfg, cache):
     for idx, targets in cfg.sliders.items():
         if idx >= len(values):
             continue
-        v = values[idx]
+        v = values[idx] ** cfg.curve  # after the noise filter, which works on raw slider positions
         for t in targets:
             if t == "master":
                 set_volume(pulse, pulse.get_sink_by_name(info.default_sink_name), v)

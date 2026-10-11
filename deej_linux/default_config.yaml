@@ -39,3 +39,10 @@ noise_reduction: default
 snap: 0.02
 # Seconds between re-applying all levels, so newly started apps pick them up.
 reapply_every: 2.0
+# Volume curve: volume = slider position ^ volume_curve.
+#   1.0 = linear (off, like upstream deej)
+#   0.5 = slider at 50 % gives 71 % volume, at 25 % gives 50 %
+#   lower = stronger boost of the lower slider range (allowed: 0.1 to 3)
+# PipeWire/PulseAudio percentages are already cubic (50 % is about -18 dB), so linear
+# leaves the lower half of the slider very quiet.
+volume_curve: 1.0

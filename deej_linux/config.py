@@ -13,7 +13,7 @@ SPECIAL = {"master", "mic", "system", "games", "unmapped"}
 ALIASES = {"deej.unmapped": "unmapped", "deej.games": "games"}  # deej.* spelling like upstream
 NOISE_LEVELS = {"low": 0.015, "default": 0.025, "high": 0.035}  # same as upstream deej
 KNOWN_KEYS = {"slider_mapping", "invert_sliders", "com_port", "baud_rate", "noise_reduction",
-              "snap", "reapply_every"}
+              "snap", "reapply_every", "volume_curve"}
 
 
 class ConfigError(Exception):
@@ -28,6 +28,7 @@ class Config:
     noise: float = NOISE_LEVELS["default"]
     snap: float = 0.02
     reapply_every: float = 2.0
+    curve: float = 1.0  # volume = slider position ** curve; 1.0 is linear
     sliders: dict = field(default_factory=dict)  # slider index -> list of lowercase targets
 
     @property
@@ -90,6 +91,7 @@ def from_dict(raw):
         noise=_fraction("noise_reduction", noise),
         snap=_fraction("snap", _get(raw, "snap", float, Config.snap)),
         reapply_every=_get(raw, "reapply_every", float, Config.reapply_every),
+        curve=_curve(_get(raw, "volume_curve", float, Config.curve)),
         sliders=sliders,
     )
 
@@ -107,6 +109,12 @@ def _fraction(key, value):
     if isinstance(value, bool) or not isinstance(value, (int, float)) or not 0 <= value < 0.5:
         raise ConfigError(f"{key}: expected a fraction between 0 and 0.5, got {value!r}")
     return float(value)
+
+
+def _curve(value):
+    if not 0.1 <= value <= 3:
+        raise ConfigError(f"volume_curve: expected a number between 0.1 and 3, got {value!r}")
+    return value
 
 
 class Watcher:

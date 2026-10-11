@@ -56,6 +56,7 @@ log and the previous config stays active.
 | `noise_reduction` | Ignore smaller changes: `low` (1.5 %), `default` (2.5 %), `high` (3.5 %), or a fraction like `0.01` |
 | `snap` | *(extra)* Snap to exactly 0 % / 100 % within this fraction of either end |
 | `reapply_every` | *(extra)* Seconds between re-applying levels, so newly started apps pick them up |
+| `volume_curve` | *(extra)* Volume = slider position ^ this. `1.0` = linear (off), `0.5` = 50 % on the slider gives 71 % volume. Lower values boost the lower range more (0.1 to 3) |
 
 Targets are `master` (default output), `mic` (default input), `system` (system/notification
 sounds), `deej.games` (all games, see below), `deej.unmapped` (every app not mapped elsewhere), or an
